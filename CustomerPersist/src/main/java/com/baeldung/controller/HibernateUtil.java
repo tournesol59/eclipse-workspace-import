@@ -1,0 +1,28 @@
+package com.baeldung.controller;
+
+import org.hibernate.*;
+import org.hibernate.cfg.*;
+
+public class HibernateUtil {
+   
+   public static final SessionFactory sessionFactory;
+
+   static {
+      try {
+	      // creation de la sessionFactory accessible global a partir de hibernate.cfg.xml
+	 sessionFactory = new Configuration().configure().buildSessionFactory();
+      } catch (Throwable ex) {
+	 // Make sure you log the exception
+	System.err.println("Initial SessionFactory creation failed." + ex);
+	throw new ExceptionInInitializerError(ex);
+      }
+   }
+
+   public static final ThreadLocal session = new ThreadLocal();
+
+   public static SessionFactory getSessionFactory() {
+       return sessionFactory;
+   }
+
+
+}

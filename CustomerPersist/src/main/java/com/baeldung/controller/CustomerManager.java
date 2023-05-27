@@ -1,0 +1,107 @@
+package com.baeldung.controller;
+
+import com.baeldung.controller.HibernateUtil;
+
+import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+import com.baeldung.login.Login;
+import com.baeldung.model.Event;
+import com.baeldung.model.Customer;
+import com.baeldung.login.Login;
+import com.baeldung.service.CustomerService;
+import com.baeldung.service.CustomerSimpleService;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.hibernate.*;
+import org.hibernate.cfg.*;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class CustomerManager {
+
+   private static final Logger LOGGER = Logger.getLogger(CustomerManager.class.getName());
+
+   public static void main(String[] args) {
+
+      CustomerManager mgr = new CustomerManager();
+      String varg="list";
+      if (varg.equals("store")) {
+	 mgr.createAndStoreCustomer("My Event", new Date());
+      }
+      else if (varg.equals("list")) {
+         List<Event> events = mgr.listEvents();
+         for (int i=0; i < events.size(); i++) {
+             Event theEvent = (Event) events.get(i);
+	     System.out.println("Event: "+ theEvent.getTitle() + 
+			     " Time: " + theEvent.getDate());
+	 }
+      }
+      else if (varg.equals("logins")) {
+	  List<Customer> customers = new ArrayList<Customer>();
+	  Customer theCustomer = mgr.listCustomersByLogin(1);
+ 
+	  System.out.println("Customer: "+theCustomer.getCustomerName() + " email: "+theCustomer.getCustomerEmail());
+      }
+      
+      SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+      sessionFactory.close();
+   }
+
+   private void createAndStoreCustomer(String title, Date theDate) {
+//      Configuration config = new Configuration();  // prefer wrapper HibernateUtil
+      Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+      session.beginTransaction();
+
+      Login login1 = new Login(3,"liberty");
+      Customer customer1 = new Customer();
+
+      customer1.setCustomerName("Granger");
+      customer1.setCustomerContact("lezard");
+      customer1.setCustomerEmail("liz.granger@gmail.com");
+      customer1.setCustomerLogin(login1);
+
+      session.save(customer1);
+
+      session.getTransaction().commit();
+
+      LOGGER.info("The query of data from Database has succeded\n");
+   }
+
+   private List<Event> listEvents() {
+      Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+ 
+      session.beginTransaction();
+
+      List<Event> result = session.createQuery("from Event as event").list();
+
+      session.getTransaction().commit();
+
+      LOGGER.info("The query of data from Database has succeded\n");
+
+      return result;
+   }
+
+    private Customer  listCustomersByLogin(int cust_id) {
+      Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+      session.beginTransaction();
+
+      Query query = session.createQuery("select cust from Customer cust left join fetch cust.customerLogin where cust.id = :cid").setParameter("cid", cust_id); // TODO after implementation of Login one-to-one
+     // Query query = session.createQuery("from Customer as cust where cust.id = :cid").setParameter("cid", cust_id);
+
+      Customer aCustomer = (Customer) query.uniqueResult();
+
+      session.getTransaction().commit();
+
+      LOGGER.info("The query of data from Database has succeded\n");
+
+      return aCustomer;      
+    }
+
+}
+
