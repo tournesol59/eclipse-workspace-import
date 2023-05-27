@@ -1,0 +1,19 @@
+package com.javatpoint.models;
+
+import java.sql.*;
+
+public class EmpSignup {
+
+   public String doSignup(String username, String password, String gender) {
+    
+      try 
+      {  Database_Connectivity dc = new Database_Connectivity(); // recopy this class from the Udemu course
+       //  Statement stmt; 
+      }
+      catch (Exception e) {
+         System.out.println("error Database Connectivity");
+      }
+      return "error";
+   }
+
+}
