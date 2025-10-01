@@ -1,0 +1,31 @@
+package com.javatpoint.base;
+
+import java.sql.*;
+
+public class DatabaseMySQLService implements IDatabase {
+
+   private String dburl;
+   private String dbusername;
+   private String dbpassword;
+   
+   protected Connection connect;
+
+   public DatabaseMySQLService() {
+     // constructor, here shall after the reading from file.properties in resources/ done
+      this.dburl = "jdbc:mysql://localhost:3306/articletestdb";
+      this.dbusername = "root";
+      this.dbpassword = "";
+      try {
+         this.connect = DriverManager.getConnection( this.dburl, this.dbusername, this.dbpassword );
+   
+      } catch (Exception e) {
+         System.out.println("connection to MySQL database error");
+      }
+   }
+
+   public Connection getConnection() {
+      return this.connect;        
+   }
+
+}
+

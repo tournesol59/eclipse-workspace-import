@@ -1,0 +1,31 @@
+package com.javatpoint.base;
+
+import java.sql.*;
+
+public class DatabaseH2Service implements IDatabase {
+
+   private String dburl;
+   private String dbusername;
+   private String dbpassword;
+   
+   protected Connection connect;
+
+   public DatabaseH2Service() {
+     // constructor, here shall after the reading from file.properties in resources/ done
+      this.dburl = "jdbc:h2:mem:articletestdb";
+      this.dbusername = "sa";
+      this.dbpassword = "";
+      try {
+         this.connect = DriverManager.getConnection( this.dburl, this.dbusername, this.dbpassword );
+   
+      } catch (Exception e) {
+         System.out.println("connection to H2 database error");
+      }
+   }
+
+   public Connection getConnection() {
+      return this.connect;        
+   }
+
+}
+

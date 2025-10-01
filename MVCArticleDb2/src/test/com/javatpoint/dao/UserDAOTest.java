@@ -1,0 +1,72 @@
+package com.javatpoint.com;
+
+import java.IOException;
+import java.sql.*;
+import java.io.*;
+
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
+import org.junit.Test;
+
+import org.junit.Assert;
+
+public class UserDAOTest {
+
+   protected Connection connect;
+   protected UserDAO userdao;
+
+   // handuse method to get a sql line from a sql file
+   public String getSqlInput1() {
+     String text;
+     try {
+        FileInputStream sqlis = new FileInputStream("C:\\Users\\frede\\eclipse-newimport\\MVCArticleDb2\\src\\main\\resources\\insert1.sql");
+	// fred: in the future replace the static filepath by a reference given by classpath to resources
+	InputStreamReader sqlinstrm = new InputStreamReader(sqlis);
+	if ((text=sqlinstrm.readline()) != null) {
+           return text;
+	}
+	sqlinstrm.close();
+	sqlis.close();
+	else return "";
+	
+     } catch (IOException e) {
+        System.out.println("error opening sql-file");
+	return "";
+     }
+   }
+
+   @BeforeClass 
+   public void before_class ()  
+   {  
+      this.userdao = new UserDAO();
+      try {
+	 // fred: get connection from the Database-type dependent service
+         connect = userdao.getDbservice().getConnection();
+	 Statement stmt = connect.createStatement();
+	 stmt.execute("CREATE IF NOT EXIST TABLE user(id INT PRIMARY KEY, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255))");
+	 System.out.println("Before class method created table user into database articletestdb");
+	 stmt.close();
+      } catch (Exception e) {
+         System.out.println("error Before class method");
+      }  
+   }
+
+   @Test  
+   public void case1 ()  
+   {  
+      try {
+	      // insert a row into the database before the test
+	 String sqlin1 = getSqlInput1();
+	 
+	 connect = userdao.getDbservice().getConnection();
+	 Statement stmt = connect.createStatement();
+	 stmt.execute(sqlin1);
+         stmt.close();
+	 
+	 String sfound = userdao.hasLoginPasswd("ghislaine", "bonjour");
+	 Assert.assertEquals("match", sfound);
+
+      }
+      System.out.println ("testHasLoginPasswd");  
+   }  
+}

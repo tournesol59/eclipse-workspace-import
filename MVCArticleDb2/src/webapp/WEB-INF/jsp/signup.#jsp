@@ -1,0 +1,60 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" %>
+	<! DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>Adding Page</title>
+</head>
+<body>
+  <h1>Add Employee here</h1>
+
+  <hr>
+
+  <form action=${pageContext.request.contextPath}/signup" method="post" enctype="multipart/form-data" onsubmit="return dovalidations()" > 
+
+  <table>
+    <tr>
+      <td>Enter first Name: </td>
+      <td><input type="text" name="empfirst" /></td>
+    </tr>
+    <tr>
+      <td>Enter Name:</td>
+      <td><input type="text" name="empname" /></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><input type="password" name="password" /></td>
+    </tr>
+    <tr>
+      <td>Reenter Password:</td>
+      <td><input type="password" name="repassword" /></td>
+    </tr>
+    <tr>
+      <td><label>Choose gender</label></td>
+      <td><input type="radio" name="gender" value="Male" /> <input type="radio" name="gender" value="Female" /></td>
+    </tr>
+    <tr>
+      <td>Enter Birthdate:</td>
+      <td><input type="text" name="birthdate" /></td>
+    </tr>
+    <tr>
+      <td>Enter Hiredate:</td>
+      <td><input type="text" name="hiredate" /></td>
+    </tr>
+    <!--  fred: lorsque le reste marchera  -->
+    <!--    <tr>  -->
+    <!--   <td><label>Select an image</label></td>  -->
+    <!--   <td>  -->
+    <!--           <input type="file" id="imgsignup" name="imgsignup" accept="image/png, image/jpeg">  -->
+    <!--   </td>  -->
+    <!-- </tr>  -->
+
+    <tr>
+      <td colspan="2">
+        <input type="submit" value="Save" /></td>
+    </tr>
+  </table>
+
+  </form>
+</body>

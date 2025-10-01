@@ -1,0 +1,8 @@
+com\javatpoint\base\IDatabase.class
+com\javatpoint\controller\ArticleController.class
+com\javatpoint\base\DatabaseMySQLService.class
+com\javatpoint\dao\UserDAO.class
+com\javatpoint\dao\ArticleDAO.class
+com\javatpoint\dao\ArticleDAOMain.class
+com\javatpoint\model\Article.class
+com\javatpoint\base\DatabaseH2Service.class

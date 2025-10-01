@@ -1,0 +1,41 @@
+package com.javatpoint.dao;
+
+import com.javatpoint.base;
+import java.sql.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+public class UserDAO {
+
+   @Autowired
+   private IDatabase dbservice;
+
+   public UserDAO(IDatabase dbservice) {
+      this.dbservice = dbservice;
+   }
+
+   public IDatabase getDbservice() {
+      return this.dbservice;
+   }
+
+   public String hasLoginPasswd(String username, String password) {
+      ResultSet result = null;
+      Connection connect = null;
+      try {
+         connect = this.dbservice.getConnection();
+	 PreparedStatement pstmt = connect.prepareStatement("SELECT * FROM user WHERE username = :name");
+	 pstmt.setString(1, username);
+	 result = pstmt.executeQuery();
+	 while (result.next()) {
+            if (result.getString(2) == password) {
+               return "match";
+	    }
+	 }
+	 return "notfound";
+      } catch (Exception e) {
+         System.out.println("error connection to database");
+	 return "error";
+      }
+   }   
+}

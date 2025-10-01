@@ -1,0 +1,52 @@
+package com.javatpoint.dao;
+
+import com.javatpoint.model.Article;
+import com.javatpoint.base.*;
+import com.javatpoint.dao.ArticleDAO;
+
+import com.javatpoint.model.*;
+
+import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
+
+//import static org.junit.Assert.assertEquals;
+//import org.junit.BeforeClass;
+//import org.junit.Before;
+//import org.junit.AfterClass
+//import org.junit.Test;
+
+public class ArticleDAOMain {
+
+   private static Article anArticle=null;
+   protected static ArticleDAO articleDAO;
+   private static IDatabase connectH2Service = null;
+   private static Connection connect;
+
+//   @BeforeClass
+   public static void setup() {
+      connectH2Service = new  DatabaseH2Service();
+      articleDAO = new ArticleDAO();
+      articleDAO.setConnectService(connectH2Service);
+      articleDAO.initDatabase();
+   }
+
+   // @Test
+   public static void main() {
+      setup();
+
+      anArticle = articleDAO.findById(1);
+        System.out.println("Main prog: article no. "+anArticle.getId()+" has title "+anArticle.getTitle());
+
+      tearDown();
+   }
+
+  // @AfterClass
+   public static void tearDown() {
+      try {
+         connect.close();
+      } catch (SQLException e) {
+         System.out.println("Error connection closure in ArticleDAOMain");
+      }
+   }
+}
